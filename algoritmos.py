@@ -75,12 +75,20 @@ def descobrir_esquema_dados_pyarrow(data_lake_path):
 # Complexidade O(n^2)
 def descobrir_esquema_dados_quadratico(data_lake_path):
     esquemas = []
+    arquivos = []
+
     for root, _, files in os.walk(data_lake_path):
-        for file1 in files:
-            if file1.endswith('.parquet'):
-                file_path = os.path.join(root, file1)
-                parquet_file = ParquetFile(file_path)
-                esquemas.append(parquet_file.schema)
+        for file in files:
+            if file.endswith('.parquet'):
+                arquivos.append(os.path.join(root, file))
+
+    for file1 in arquivos:
+        parquet_file1 = ParquetFile(file1)
+        schema1 = parquet_file1.schema
+        for file2 in arquivos:
+            parquet_file2 = ParquetFile(file2)
+        esquemas.append(schema1)
+
     return esquemas
 
 
